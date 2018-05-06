@@ -18,8 +18,8 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
-channel_id = 411751 # Change for your sensor
-read_key    = 'BVJS8JTJ7161UVEB'
+channel_id = 358829 # Change for your sensor
+read_key    = 'HMKW1CQN5IHL5NUD' # West Knoxville, TN sensor
 
 channel = thingspeak.Channel(id=channel_id,api_key=read_key, fmt='txt')
 
@@ -44,8 +44,18 @@ try:
     # example tweet: "Particles in the air: blank. Particles can cause blank. If you are blank sensitive be careful. Like golf, the lower the number the better."
     Particles = float(channel.get_field_last(field='field2'))
     if Particles < 12.1:
-        Air_Quality = "Good air quality today. Fun Fact: Like golf, the lower the number, the better the score."
-    api.update_status("Too many particles in the air can cause many problems, and make it difficult to breathe. " + Air_Quality)
+        Air_Quality = "Good air quality today. It might be nice to play outside. Fun Fact: Like golf, the lower the number, the better the score."
+    elif Particles < 35.5:
+        Air_Quality = "The air quality is okay... could be better. Moderate air, still quite fair."
+    elif Particles < 55.5:
+        Air_Quality = "If you are sensitive be careful, the air is unhealthy for you."
+    elif Particles < 150.5:
+        Air_Quality = "The air is unhealthy, try to stay indoors more."
+    elif Particles < 250.5:
+        Air_Quality = "Stay inside as much as possible, the air is very unhealthy. Fact: Too many particles can make it difficult to breathe."
+    elif Particles < 500.1:
+        Air_Quality = "WARNING! Air is hazardous. Stay inside!"
+    api.update_status(Air_Quality)
 except:
     raise
     print("connection failed")
