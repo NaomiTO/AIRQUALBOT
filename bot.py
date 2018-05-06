@@ -32,6 +32,7 @@ channel = thingspeak.Channel(id=channel_id,api_key=read_key, fmt='txt')
 # 150.5-250.4: Very Unhealthy
 # 250.5-500: Hazardous
 
+Air_Quality = "Unknown"
 
 try:
     # Get the last 2 results from field 2 of your channel
@@ -41,7 +42,10 @@ try:
     # Get the last data in field 2 of your channel
     #print(channel.get_field_last(field='field2'))
     # example tweet: "Particles in the air: blank. Particles can cause blank. If you are blank sensitive be careful. Like golf, the lower the number the better."
-    api.update_status("Too many particles in the air can cause many problems, and make it difficult to breathe" + channel.get_field_last(field='field2'))
+    Particles = float(channel.get_field_last(field='field2'))
+    if Particles < 12.1:
+        Air_Quality = "Good air quality today. Fun Fact: Like golf, the lower the number, the better the score."
+    api.update_status("Too many particles in the air can cause many problems, and make it difficult to breathe. " + Air_Quality)
 except:
     raise
     print("connection failed")
