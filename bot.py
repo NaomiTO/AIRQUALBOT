@@ -6,6 +6,8 @@
 
 import tweepy
 import thingspeak
+import datetime
+import pytz
 
 # there is a secrets.py file that has the keys
 from secrets import CONSUMER_KEY
@@ -22,6 +24,8 @@ channel_id = 358829 # Change for your sensor
 read_key    = 'HMKW1CQN5IHL5NUD' # West Knoxville, TN sensor
 
 channel = thingspeak.Channel(id=channel_id,api_key=read_key, fmt='txt')
+
+now = datetime.datetime.now(pytz.timezone('US/Eastern'))
 
 # http://aqicn.org/faq/2013-09-09/revised-pm25-aqi-breakpoints/
 # conversion chart from PM2.5 to quality
@@ -55,7 +59,7 @@ try:
         Air_Quality = "Stay inside as much as possible, the air is very unhealthy. Fact: Too many particles can make it difficult to breathe."
     elif Particles < 500.1:
         Air_Quality = "WARNING! Air is hazardous. Stay inside!"
-    api.update_status(Air_Quality)
+    api.update_status("Report from: " + str(now.month) + "/" + str(now.day) + "/" + str(now.year) + " " + str(now.hour) + ":" + str(now.minute) + " " + Air_Quality)
 except:
     raise
     print("connection failed")
