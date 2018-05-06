@@ -33,7 +33,8 @@ try:
     print(channel.get_last_data_age(field='field1'))
     # Get the last data in field 1 of your channel
     print(channel.get_field_last(field='field1'))
-    api.update_status(channel.get_field_last(field='field1'))
+    # example tweet: "Particles in the air: blank. Particles can cause blank. If you are blank sensitive be careful. Like golf, the lower the number the better."
+    api.update_status("Too many particles in the air can cause many problems, and make it diffucult to breathe" + channel.get_field_last(field='field1'))
 except:
     raise
     print("connection failed")
